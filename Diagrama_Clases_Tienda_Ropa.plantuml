@@ -1,0 +1,114 @@
+@startuml Tienda de Ropa
+class Cliente{
+    - idCliente: int
+    - nombre: String
+    - comprasPendientes: List<Compra>
+
+    + pagarCompra(compra: Compra): void
+    + agregarCompraPendiente(compra: Compra): void
+    + contarComprasPendientes(): int
+    + comprasPendientesPorCategoria(categoria: Categoria): boolean
+
+}
+
+abstract class Prenda{
+    # idPrenda: int
+    # categoria: Categoria
+    # marca: String
+    # precio: float
+    # talle: int
+    # color: String
+    # temporada: int
+
+    # calcularPrecioFinal(): float {abstract}
+}
+
+class Mujer{
+    + calcularPrecioFinal(): float
+}
+
+class Hombre{
+    + calcularPrecioFinal(): float
+}
+
+class Infante{
+    + calcularPrecioFinal(): float
+}
+
+class Compra{
+    - idCompra: int
+    - cliente: Cliente
+    - prenda: Prenda
+    - formaPago: FormaPago
+    - estadoCompra: Estado
+
+    + registrarCompra(): void
+    + obtenerPrecioFinal(): float 
+    + pagarCompra(): void
+    + verificarCompraPagada(): boolean
+}
+
+class Tienda{
+    - idTienda: int
+    - inventario: List<Prenda>
+    - ventas: List<Compra>
+    
+    + agregarPrendaInventario(prenda: Prenda): void
+    + registraVenta(compra: Compra): void
+    + generarInforme(): void
+}
+
+class Empleado{
+    - idEmpleado: int
+    - nombre: String
+    - tiendaAsignada: Tienda
+}
+
+class Sistema{
+    - tiendas: List<Tienda>
+    - empleados: List<Empleado>
+    - clientes: List<Cliente>
+
+    + agregarTienda(tienda: Tienda): void
+    + agregarEmpleado(empleado: Empleado): void
+    + agregarCliente(cliente: Cliente): void
+    + registrarCompra(idCliente: int, idPrenda: int, formaPago: FormaPago): void
+    + registrarCompraPorEmpleado(idEmpleado: int, idCliente: int, idPrenda: int, formaPago: FormaPago): void
+}
+
+enum Estado{
+    PENDIENTE
+    PAGADO
+}
+
+enum FormaPago{
+    TARJETA
+    EFECTIVO
+    TRANSFERENCIA
+}
+
+enum Categoria{
+    CASUAL
+    DEPORTIVA
+    FORMAL
+}
+
+Prenda <|-- Mujer
+Prenda <|-- Hombre
+Prenda <|-- Infante
+
+Prenda "1" <-- "1" Categoria: tiene 
+Compra "1" <-- "1" FormaPago: se realiza
+Compra "1" <-- "1" Estado: posee
+Sistema "1" --> "1..*" Tienda: gestiona
+
+
+
+Cliente "1" *-- "0..*" Compra : realiza
+Compra "1" --* "1..*" Prenda : incluye
+Tienda "1" *-- "0..*" Prenda : contiene
+Tienda "1" *-- "0..*" Compra : registra
+Empleado "1" --* "1" Tienda : trabaja en
+Empleado "1" --> "1" Sistema: gestiona
+
+@enduml

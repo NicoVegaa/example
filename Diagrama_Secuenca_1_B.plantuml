@@ -1,0 +1,9 @@
+@startuml
+actor Cliente
+Cliente -> Sistema: Solicitar cálculo de precio final (idCompra)
+Sistema -> Compra: Recuperar información de la prenda
+Compra -> Prenda: Calcular precio (según tipo de prenda)
+Prenda --> Compra: Retorna precio calculado
+Compra --> Sistema: Enviar precio final
+Sistema -> Cliente: Retorna precio final calculado
+@enduml

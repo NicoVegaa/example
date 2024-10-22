@@ -1,0 +1,21 @@
+@startuml
+actor Sistema
+activate Sistema
+Sistema -> Sistema: registrarCompra(idCliente: int, idPrenda: int, formaPago: FormaPago): void
+Sistema -> Cliente: registrarCompra(idCliente: int, idPrenda: int, formaPago: FormaPago): void
+deactivate Sistema
+
+activate Cliente
+Cliente -> Cliente: contarComprasPendientes(): int
+alt contarComprasPendientes() >= 2
+    Cliente --> Sistema: No se puede realizar la compra
+else
+    activate Cliente
+    Cliente -> Cliente: comprasPendientesPorCategoria(categoria: Categoria): boolean
+    alt comprasPendientesPorCategoria(categoria: Categoria) == true
+        Cliente --> Sistema: No se puede realizar la compra
+    else
+
+    end
+end
+@enduml
