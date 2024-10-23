@@ -1,0 +1,55 @@
+@startuml Diagrama Tienda de Ropa
+class Cliente {
+    +int idCliente
+    +String nombre
+    +int comprasPendientes
+    +comprar()
+    +verificarRestricciones()
+}
+
+class Prenda {
+    +int idPrenda
+    +String tipo
+    +String categoria
+    +String marca
+    +float precio
+    +int talle
+    +String color
+    +int temporada
+    +calcularPrecioFinal()
+}
+
+class Compra {
+    +int idCompra
+    +Cliente cliente
+    +Prenda prenda
+    +String formaPago
+    +String estadoCompra
+    +registrarCompra()
+    +calcularPrecioFinal()
+}
+
+class Tienda {
+    +int idTienda
+    +List<Prenda> inventario
+    +List<Compra> ventas
+    +gestionarInventario()
+    +registrarVenta()
+    +generarInforme()
+}
+
+class Empleado {
+    +int idEmpleado
+    +String nombre
+    +realizarDevolucion()
+    +gestionarInventario()
+}
+
+Cliente "1" -- "0..*" Compra : realiza
+Compra "1" -- "1" Prenda : incluye
+Compra "1" -- "1" Tienda : realizada en
+Tienda "1" -- "0..*" Prenda : gestiona
+Tienda "1" -- "0..*" Compra : registra
+Empleado "1" -- "1" Tienda : trabaja en
+
+@enduml

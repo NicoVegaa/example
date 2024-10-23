@@ -1,0 +1,31 @@
+@startuml
+actor Main
+Main -> TiendaDeRopa: calcularPrecioFinal(int idCompra): float
+activate TiendaDeRopa
+TiendaDeRopa -> TiendaDeRopa: buscarCompra(int idCompra): Compra
+activate TiendaDeRopa
+loop por cada Compra
+  TiendaDeRopa -> Compra: sosCompra(int idCompra): boolean
+  activate Compra
+  Compra --> TiendaDeRopa: boolean
+  deactivate Compra
+end loop
+deactivate TiendaDeRopa
+TiendaDeRopa -> Compra: buscarPrecioFinal(): float
+activate Compra
+Compra -> Prenda:calcularPrecioFinal(): float
+activate Prenda
+    Prenda -> PrendaHombre: calcularPrecio(): float
+    activate PrendaHombre
+    PrendaHombre -> PrendaHombre: getPrecioBase(): float
+    PrendaHombre -> PrendaHombre: getAnioInicial(): int
+    PrendaHombre --> Prenda: precioFinal
+    deactivate PrendaHombre
+    Prenda --> Compra: precioFinal
+    Compra -> Compra: fijarPrecioFinal(float)
+    Compra --> TiendaDeRopa: precioFinal
+    TiendaDeRopa --> Main: precioFinal
+deactivate Prenda
+deactivate TiendaDeRopa
+deactivate Compra
+@enduml
