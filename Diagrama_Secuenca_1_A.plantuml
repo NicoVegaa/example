@@ -1,21 +1,24 @@
 @startuml
-actor Sistema
+actor Main
+Main -> Sistema: registrarCompra(idCliente: int, idPrenda: int, formaPago: FormaPago): void
 activate Sistema
-Sistema -> Sistema: registrarCompra(idCliente: int, idPrenda: int, formaPago: FormaPago): void
-Sistema -> Cliente: registrarCompra(idCliente: int, idPrenda: int, formaPago: FormaPago): void
-deactivate Sistema
-
+Sistema -> Cliente: buscarClientePorId(idCliente: int): Cliente
 activate Cliente
+Cliente --> Sistema: cliente
+Sistema -> Cliente: registrarCompra(idCliente: int, idPrenda: int, formaPago: FormaPago): void
+
+
+
 Cliente -> Cliente: contarComprasPendientes(): int
-alt contarComprasPendientes() >= 2
-    Cliente --> Sistema: No se puede realizar la compra
+alt contarComprasPendientes() < 2
+    
 else
     activate Cliente
     Cliente -> Cliente: comprasPendientesPorCategoria(categoria: Categoria): boolean
     alt comprasPendientesPorCategoria(categoria: Categoria) == true
         Cliente --> Sistema: No se puede realizar la compra
     else
-
+        Cliente --> Sistema: No se puede realizar la compra
     end
 end
 @enduml
